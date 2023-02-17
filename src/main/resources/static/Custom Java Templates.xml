@@ -1,0 +1,78 @@
+<templateSet group="Custom Java Templates">
+  <template name="i" value="$accessSpecifier$int $varName$;" description="private int" toReformat="false" toShortenFQNames="true">
+    <variable name="accessSpecifier" expression="enum(&quot;private &quot;,&quot;&quot;,&quot;public &quot;)" defaultValue="private " alwaysStopAt="true" />
+    <variable name="varName" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="COMPLETION" value="true" />
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="s" value="$accessSpecifier$String $varName$;" description="private String" toReformat="false" toShortenFQNames="true">
+    <variable name="accessSpecifier" expression="enum(&quot;private &quot;,&quot;&quot;,&quot;public &quot;)" defaultValue="private " alwaysStopAt="true" />
+    <variable name="varName" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="COMPLETION" value="true" />
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="l" value="$accessSpecifier$long $varName$;" description="private long" toReformat="false" toShortenFQNames="true">
+    <variable name="accessSpecifier" expression="enum(&quot;private &quot;,&quot;&quot;,&quot;public &quot;)" defaultValue="private " alwaysStopAt="true" />
+    <variable name="varName" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="COMPLETION" value="true" />
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="log" value="private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger($className$);" description="declare a slf4j Logger" toReformat="false" toShortenFQNames="true">
+    <variable name="className" expression="concat(className(),&quot;.class&quot;)" defaultValue="" alwaysStopAt="false" />
+    <context>
+      <option name="COMPLETION" value="true" />
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="info" value="LOGGER.info(&quot;$className$.$methodName$: $info$);" description="declare a slf4j Logger" toReformat="false" toShortenFQNames="true">
+    <variable name="className" expression="className()" defaultValue="" alwaysStopAt="true" />
+    <variable name="methodName" expression="methodName()" defaultValue="" alwaysStopAt="true" />
+    <variable name="info" expression="groovyScript(&quot;_1.withIndex().collect { el, index -&gt; el + ': \&quot; + ' + (_2[index].indexOf('[') &gt; 0 ? (_2[index].lastIndexOf('[') != _2[index].indexOf('[') ? 'java.util.Arrays.deepToString(' : 'java.util.Arrays.toString(') + el + ')' : el) }.join(' + \&quot;| ')&quot;, methodParameters(), methodParameterTypes())" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="COMPLETION" value="true" />
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="get" value="@GetMapping(&quot;$target$&quot;)&#10;public ResponseEntity&lt;$type$&gt; $methodName$() {&#10;    $type$ $variable$ = $expression$;&#10;    return new ResponseEntity($returnObject$, $status$);&#10;}" description="public String method" toReformat="false" toShortenFQNames="false">
+    <variable name="target" expression="&quot;target&quot;" defaultValue="" alwaysStopAt="false" />
+    <variable name="type" expression="expectedType()" defaultValue="" alwaysStopAt="true" />
+    <variable name="methodName" expression="&quot;methodName&quot;" defaultValue="methodName" alwaysStopAt="true" />
+    <variable name="variable" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <variable name="expression" expression="variableOfType(type)" defaultValue="" alwaysStopAt="true" />
+    <variable name="returnObject" expression="variableOfType(type)" defaultValue="" alwaysStopAt="true" />
+    <variable name="status" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+  <template name="psm" value="public String $methodName$() {&#10;    $end$&#10;}" description="public String method" toReformat="false" toShortenFQNames="false">
+    <variable name="methodName" expression="methodName()" defaultValue="" alwaysStopAt="true" />
+    <variable name="end" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+  <template name="post" value="@PostMapping(&quot;$target$&quot;)&#10;public ResponseEntity&lt;$type$&gt; $methodName$() {&#10;    $type$ $variable$ = $expression$;&#10;    return new ResponseEntity($returnObject$, $status$);&#10;}" description="@PostMapping" toReformat="false" toShortenFQNames="false">
+    <variable name="target" expression="&quot;target&quot;" defaultValue="" alwaysStopAt="false" />
+    <variable name="type" expression="expectedType()" defaultValue="" alwaysStopAt="true" />
+    <variable name="methodName" expression="&quot;methodName&quot;" defaultValue="" alwaysStopAt="true" />
+    <variable name="variable" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <variable name="expression" expression="variableOfType(type)" defaultValue="" alwaysStopAt="true" />
+    <variable name="returnObject" expression="variableOfType(type)" defaultValue="" alwaysStopAt="true" />
+    <variable name="status" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+</templateSet>
