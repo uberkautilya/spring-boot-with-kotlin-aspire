@@ -23,16 +23,24 @@ class BooksService(private val booksRepository: BooksRepository) {
     @Value("\${pagination.page.size.default}")
     private val defaultPageSize: Int? = null
 
+    @Value("\${custom.application.properties.one: DefaultValue}")
+    private lateinit var applicationProperty: String
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(BooksService::class.java)
     }
 
     /**
+     * An example of fetching an application property provided in application.yml file
+     */
+    fun getApplicationProperty(): String {
+        return applicationProperty
+    }
+    /**
      * Save a list of books passed as request body
      */
     fun save(bookList: List<Book?>): BooksResponse {
-        var booksAdded: List<Book?> = ArrayList()
-        booksAdded = try {
+        var booksAdded: List<Book?> = try {
             booksRepository.saveAll(bookList)
         } catch (e: Exception) {
             LOGGER.info("BooksService.addBooks: exception: " + e.message)

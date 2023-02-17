@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/learn_kotlin
-    username: username
-    password: password
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
@@ -14,3 +14,8 @@ pagination:
   page:
     size:
       default: 2
+
+custom:
+  application:
+    properties:
+      one: "A custom application property from the application.yml file"

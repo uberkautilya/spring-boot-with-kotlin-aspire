@@ -58,4 +58,10 @@ public class BooksController(val booksService: BooksService) {
         return ResponseEntity<BooksResponse>(booksDeletedResponse, HttpStatus.OK)
     }
 
+    @GetMapping("/property")
+    fun getApplicationProperty(): ResponseEntity<String> {
+        LOGGER.info("BooksController:: getApplicationProperty()")
+        val applicationProperty: String = booksService.getApplicationProperty()
+        return ResponseEntity<String>(applicationProperty, HttpStatus.OK)
+    }
 }
