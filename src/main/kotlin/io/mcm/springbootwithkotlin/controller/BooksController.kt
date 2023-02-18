@@ -19,7 +19,7 @@ public class BooksController(val booksService: BooksService) {
     @PostMapping
     fun addBooks(@RequestBody booksRequest: BooksRequest): ResponseEntity<BooksResponse> {
         LOGGER.info("BooksController:: addBooks({})", booksRequest)
-        val booksResponse: BooksResponse = booksService.save(booksRequest.bookList)
+        val booksResponse: BooksResponse = booksService.save(booksRequest.bookList!!)
         return ResponseEntity.ok(booksResponse)
     }
 
@@ -47,7 +47,7 @@ public class BooksController(val booksService: BooksService) {
     @PutMapping
     fun updateBooks(@RequestBody booksRequest: BooksRequest): ResponseEntity<BooksResponse> {
         LOGGER.info("BooksController:: updateBooks({})", booksRequest)
-        val updatedBooksResponse: BooksResponse = booksService.updateBooks(booksRequest.bookList)
+        val updatedBooksResponse: BooksResponse = booksService.updateBooks(booksRequest.bookList!!)
         return ResponseEntity<BooksResponse>(updatedBooksResponse, HttpStatus.OK)
     }
 

@@ -40,11 +40,11 @@ class BooksService(private val booksRepository: BooksRepository) {
      * Save a list of books passed as request body
      */
     fun save(bookList: List<Book?>): BooksResponse {
-        var booksAdded: List<Book?> = try {
+        var booksAdded: MutableList<Book?> = try {
             booksRepository.saveAll(bookList)
         } catch (e: Exception) {
             LOGGER.info("BooksService.addBooks: exception: " + e.message)
-            throw BooksException(null, null, null, bookList)
+            throw BooksException(emptyList(), emptyList(), emptyList(), bookList)
         }
         return BooksResponse(booksAdded)
     }
@@ -61,11 +61,11 @@ class BooksService(private val booksRepository: BooksRepository) {
      * Update books using their Ids
      */
     fun updateBooks(bookList: List<Book?>): BooksResponse {
-        var booksUpdated: List<Book?>? = try {
+        var booksUpdated: MutableList<Book?> = try {
             booksRepository.saveAll(bookList)
         } catch (e: Exception) {
             LOGGER.info("BooksService.updateBooks: exception: " + e.message)
-            throw BooksException(null, null, bookList, null)
+            throw BooksException(emptyList(), emptyList(), bookList, emptyList())
         }
         return BooksResponse(booksUpdated)
     }
@@ -74,7 +74,7 @@ class BooksService(private val booksRepository: BooksRepository) {
      * Delete Books by Id
      */
     fun deleteBooks(bookIdsToDeleteList: List<Long>): BooksResponse {
-        val deletedBookList: MutableList<Book> = ArrayList()
+        val deletedBookList: MutableList<Book?> = ArrayList()
         for (id in bookIdsToDeleteList) {
             val bookOptional = booksRepository.findById(id)
             bookOptional.ifPresent { b: Book ->
@@ -87,7 +87,7 @@ class BooksService(private val booksRepository: BooksRepository) {
             booksRepository.deleteAllById(bookIdsToDeleteList)
         } catch (e: Exception) {
             LOGGER.info("BooksService.deleteBooks: exception: " + e.message)
-            throw BooksException(bookIdsToDeleteList, null, null, null)
+            throw BooksException(bookIdsToDeleteList, emptyList(), emptyList(), emptyList())
         }
         return BooksResponse(deletedBookList)
     }
@@ -99,9 +99,9 @@ class BooksService(private val booksRepository: BooksRepository) {
         val bookById =
             booksRepository.findById(id)
         if (bookById.isEmpty) {
-            throw BooksException(null, listOf(id), null, null)
+            throw BooksException(emptyList(), listOf(id), emptyList(), emptyList())
         }
-        return BooksResponse(listOf(bookById.get()))
+        return BooksResponse(mutableListOf(bookById.get()))
     }
 
     /**
@@ -111,7 +111,7 @@ class BooksService(private val booksRepository: BooksRepository) {
         var list: List<Book?>?
         var pages: Page<Book?>?
         if (request.pageNumber == null) {
-            pages = PageImpl(booksRepository.findAll(bookSpecification!!.getBooks(request)))
+            pages = PageImpl(booksRepository.findAll(bookSpecification!!.build(request)))
         } else {
             if (request.pageSize == null) {
                 request.pageSize = defaultPageSize
@@ -121,12 +121,13 @@ class BooksService(private val booksRepository: BooksRepository) {
                 request.pageNumber,
                 request.pageSize
             )
-            val pageable: Pageable = PageRequest.of(request.pageNumber - 1, request.pageSize)
-            pages = booksRepository.findAll(bookSpecification!!.getBooks(request), pageable)
+            val pageable: Pageable = PageRequest.of(request.pageNumber!! - 1, request.pageSize!!)
+            pages = booksRepository.findAll(bookSpecification!!.build(request), pageable)
         }
         list = pages.content
+        LOGGER.info("pages.content: ${pages.content}")
         if (list.isNotEmpty()) {
-            val booksResponse = BooksResponse(ArrayList())
+            val booksResponse = BooksResponse(mutableListOf())
             booksResponse.setTotalPages(pages.totalPages)
             booksResponse.setTotalCount(pages.totalElements)
             booksResponse.setPageNo(pages.number + 1)
@@ -135,6 +136,6 @@ class BooksService(private val booksRepository: BooksRepository) {
             }
             return booksResponse
         }
-        return BooksResponse(emptyList())
+        return BooksResponse(mutableListOf())
     }
 }
