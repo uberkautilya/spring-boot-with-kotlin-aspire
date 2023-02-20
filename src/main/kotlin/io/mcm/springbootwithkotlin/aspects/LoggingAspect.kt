@@ -38,10 +38,18 @@ class LoggingAspect {
 
     @Around("logControllerCallsPointcut()")
     fun aroundControllerCallsExecution(proceedPoint: ProceedingJoinPoint): Any? {
-        val controllerLogger = LoggerFactory.getLogger(proceedPoint.signature.declaringType)
-        controllerLogger.info("${proceedPoint.signature} invoked with arguments \n${proceedPoint.args.contentToString()}")
+        val signature = proceedPoint.signature
+        val controllerLogger = LoggerFactory.getLogger(signature.declaringType)
+        controllerLogger.info("$signature invoked with arguments \n${proceedPoint.args.contentToString()}")
+        println("signature.name: ${signature.name}")
+        println("signature.declaringTypeName: ${signature.declaringTypeName}")
+        println("signature.declaringTypeName: ${signature.declaringTypeName}")
+        println("signature.modifiers: ${signature.modifiers}")
+        println("signature.declaringType.name: ${signature.declaringType.name}")
+        println("signature.declaringType.simpleName: ${signature.declaringType.simpleName}")
+        println("signature.declaringType.typeName: ${signature.declaringType.typeName}")
         val result: Any = proceedPoint.proceed()
-        controllerLogger.info("${proceedPoint.signature} completed with result: \n$result")
+        controllerLogger.info("$signature completed with result: \n$result")
         return result
     }
 }
